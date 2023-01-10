@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Static Web Apps - Authentication</title>
+</head>
+
+<body>
+    <h1>Static Web Apps - Authentication</h1>
+    <div id="loginButtons"></div>
+    <div id="userInfo">
+
+    </div>
+    <script>
+        const providers = ["github", "twitter", "facebook", "aad", "google"];
+        const loginButtons = document.getElementById("loginButtons");
+        providers.forEach(provider => {
+            const button = document.createElement("button");
+            button.innerText = `Login with ${provider}`;
+            button.onclick = () => {
+                window.location.href = `/.auth/login/${provider}`;
+            };
+            loginButtons.appendChild(button);
+        });
+
+        const userInfo = document.getElementById("userInfo");
+        fetch("/.auth/me")
+            .then(response => response.json())
+            .then(data => {
+                if (data.clientPrincipal) {
+                    userInfo.innerText = `Hello ${data.clientPrincipal.userDetails}`;
+                    const button = document.createElement("button");
+                    button.innerText = "Logout";
+                    button.onclick = () => {
+                        window.location.href = "/.auth/logout";
+                    };
+                    loginButtons.appendChild(button);
+                } else {
+                    userInfo.innerText = "Hello anonymous";
+                }
+            });
+    </script>
+</body>
+
+</html>
