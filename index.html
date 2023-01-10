@@ -16,6 +16,8 @@
     <code id="userDetails">
 
     </code>
+    <div id="apiResult">
+    </div>
     <script>
         const providers = ["github", "twitter", "facebook", "aad", "google"];
         const loginButtons = document.getElementById("loginButtons");
@@ -42,6 +44,19 @@
                         window.location.href = "/.auth/logout";
                     };
                     loginButtons.appendChild(button);
+
+                    // invoke api/Messages and display the result
+                    const apiResult = document.getElementById("apiResult");
+                    const button2 = document.createElement("button");
+                    button2.innerText = "Invoke API";
+                    button2.onclick = () => {
+                        fetch("/api/Messages")
+                            .then(response => response.text())
+                            .then(data => {
+                                apiResult.innerText = data;
+                            });
+                    };
+                    loginButtons.appendChild(button2);
                 } else {
                     userInfo.innerText = "Hello anonymous";
                 }
