@@ -13,6 +13,9 @@
     <div id="userInfo">
 
     </div>
+    <code id="userDetails">
+
+    </code>
     <script>
         const providers = ["github", "twitter", "facebook", "aad", "google"];
         const loginButtons = document.getElementById("loginButtons");
@@ -26,11 +29,13 @@
         });
 
         const userInfo = document.getElementById("userInfo");
+        const userDetails = document.getElementById("userDetails");
         fetch("/.auth/me")
             .then(response => response.json())
             .then(data => {
                 if (data.clientPrincipal) {
                     userInfo.innerText = `Hello ${data.clientPrincipal.userDetails}`;
+                    userDetails.innerText = JSON.stringify(data.clientPrincipal, null, 2);
                     const button = document.createElement("button");
                     button.innerText = "Logout";
                     button.onclick = () => {
